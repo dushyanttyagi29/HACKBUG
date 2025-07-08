@@ -109,7 +109,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+    origin : '*',
+    credentials :true,
+}));
 app.use(bodyParser.json());
 
 // Route: Search JIRA issues based on input query
