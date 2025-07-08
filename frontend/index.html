@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <title>BugSense - Making Sense of Every Bug</title>
+    <title>BugSense</title>
 </head>
 <body>
     <div class="page-wrapper">
@@ -13,7 +14,7 @@
     <div class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
+                <div class="logo" id="floating-logo">
                     <div class="logo-icon"><i class="fa-solid fa-bug"></i></div>
                     <!-- <img src="images/logo.png" alt="BugSense Logo" class="logo-image"> -->
                     <div class="logo-text">BugSense</div>
@@ -27,7 +28,7 @@
         <div id="home-page">
             <div class="hero">
                 <div class="hero-content">
-                    <h1>BugSense</h1>
+                    <h1 id="main-logo">BugSense</h1>
                     <p>Making Sense of Every Bug</p>
                     <div class="hero-question">Let me know which bug is bothering you?</div>
                     <button class="cta-btn" onclick="showSearchPage()">Get Started</button>
@@ -153,8 +154,7 @@
         </div>
     </div>
     </div>
-
-    <hr class="footer-divider" />
+    <!-- <hr class="footer-divider" /> -->
 
     <footer>  
         Built with <span style="color: #ff6b35;">❤️</span> by <strong>BugSense</strong> | © 2025

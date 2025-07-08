@@ -1,11 +1,13 @@
-// const API_BASE_URL = 'http://localhost:3000';
+ const API_BASE_URL = 'http://localhost:3005';
 
-const API_BASE_URL = 'https://hackbug-1.onrender.com';
+//const API_BASE_URL = 'https://hackbug-1.onrender.com';
 
 function showSearchPage() {
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('search-page').style.display = 'block';
     document.querySelector('.back-btn').style.display = 'block';
+    // Add class to make logo text always visible in search page
+    document.querySelector('.logo-text').classList.add('show');
 }
 
 function goHome() {
@@ -13,6 +15,8 @@ function goHome() {
     document.getElementById('search-page').style.display = 'none';
     document.getElementById('results-section').style.display = 'none';
     document.querySelector('.back-btn').style.display = 'none';
+    // Remove class so it goes back to scroll-controlled visibility
+     document.querySelector('.logo-text').classList.remove('show');
 }
 
 async function searchBugs() {
@@ -34,6 +38,7 @@ async function searchBugs() {
 
         // Search for tickets
         const response = await fetch(`${API_BASE_URL}/search`, {
+    
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -210,5 +215,18 @@ document.getElementById('bug-input').addEventListener('keypress', function(event
 // Auto-fill example on page load
 document.addEventListener('DOMContentLoaded', function() {
     // Optional: Add any initialization code here
+});
+
+
+//scroll logic
+window.addEventListener('scroll', function () {
+           const scrollY = window.scrollY;
+           const body = document.body;
+
+           if (scrollY > 50) {
+            body.classList.add('scrolled');
+           } else {
+             body.classList.remove('scrolled');
+        }
 });
    

@@ -9,8 +9,16 @@
     "dev": "node start-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["bug", "jira", "ai", "debugging", "troubleshooting"],
+  "keywords": [
+    "bug",
+    "jira",
+    "ai",
+    "debugging",
+    "troubleshooting"
+  ],
   "author": "BugSense Team",
   "license": "ISC",
-  "dependencies": {}
-} 
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
+}

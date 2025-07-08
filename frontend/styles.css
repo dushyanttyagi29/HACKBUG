@@ -1,3 +1,4 @@
+
         * {
             margin: 0;
             padding: 0;
@@ -6,7 +7,11 @@
 
         html, body {
             height: 100%;
-            margin: 0;
+            /* margin: 0; */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* background: linear-gradient(135deg, #fef7f0 0%, #fff5f0 100%); */
+            color: #333;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -60,6 +65,8 @@
             font-size: 25px;
             font-weight: 700;
             color: #ff6b35;
+            opacity: 0;
+            transition: all 0.5s ease;
         }
 
         .logo-image {
@@ -89,8 +96,11 @@
 
         /* Hero Section */
         .hero {
-            padding: 30px 0 0px;
-            text-align: center;
+            /* padding: 30px 0 0px;
+            text-align: center; */
+            padding: 0px 0px 0px;
+            /* display: flex;
+            justify-content: center; */
         }
 
         /* .hero-content {
@@ -106,7 +116,8 @@
             padding: 30px 40px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 40px;
+            margin: 20px 0;
+            text-align: center;
         }
 
 
@@ -114,7 +125,8 @@
             font-size: 4rem;
             font-weight: 800;
             color: #ff6b35;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            transition: all 0.6s ease;
         }
 
         .hero p {
@@ -145,8 +157,43 @@
         .cta-btn:hover {
             background: #e55a2b;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+            /* box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4); */
         }
+
+
+
+
+
+        /* Main logo in center */
+        #main-logo {
+          transition: all 0.6s ease;
+          font-size: 4rem;
+        } 
+
+        /* Transition effect */
+        .scrolled .logo-text {
+          opacity: 1;
+        }
+
+        .scrolled #main-logo {
+         transform: scale(0.6) translate(-350px, -120px);
+         opacity: 0;
+       }
+
+        .scrolled .hero h1 {
+        transform: scale(0.6) translate(-300px, -130px);
+        opacity: 0;
+        }
+
+        /* Spacer for scroll */
+        .spacer {
+          height: 1200px;
+        }
+
+
+
+
+
 
         /* Marketing Section */
         .marketing {
@@ -183,7 +230,7 @@
             padding: 40px 30px;
             border-radius: 16px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.09);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             transition: transform 0.3s ease;
         }
 
@@ -227,7 +274,7 @@
             /* background: white; */
             background: linear-gradient(320deg, #f6e2d1, #ffffff);
             padding: 30px 0;
-            margin: 60px 0;
+            margin: 50px 0;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
@@ -689,51 +736,17 @@
           padding: 20px 0;
           font-size: 0.95rem;
           color: #666;
+          background-color: #fcefdc;
         }
 
-        .footer-divider {
+        /* .footer-divider {
           border: none;
           height: 2px;
           background-color: #ff6b35;
           margin: 10px auto;
           width: 100%;
-        }
+        } */
 
-        .ticket-link {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-
-        .ticket-link a {
-            color: #ff6b35;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .ticket-link a:hover {
-            color: #e55a2b;
-            text-decoration: underline;
-        }
-
-        .summary-text {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            line-height: 1.6;
-            font-size: 1rem;
-            color: #333;
-            border-left: 4px solid #ff6b35;
-        }
-
-        .fa-spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-    
+.logo-text.show {
+        opacity: 1 !important;
+}
