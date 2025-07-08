@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Tickets Data</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        button { padding: 10px 20px; background: #ff6b35; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #e55a2b; }
+    </style>
+</head>
+<body>
+    <h1>Debug Tickets Data Structure</h1>
+    
+    <div class="debug-section">
+        <h2>Test Search</h2>
+        <input type="text" id="searchInput" placeholder="Enter search term (e.g., 'bug', 'error')" style="width: 300px; padding: 8px; margin-right: 10px;">
+        <button onclick="testSearch()">Search Issues</button>
+        <div id="searchResult"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>Test Tickets Endpoint</h2>
+        <button onclick="testTickets()">Get Stored Tickets</button>
+        <div id="ticketsResult"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000';
+
+        async function testSearch() {
+            const input = document.getElementById('searchInput').value;
+            if (!input) {
+                alert('Please enter a search term');
+                return;
+            }
+
+            try {
+                console.log('Searching for:', input);
+                const response = await fetch(`${API_BASE_URL}/search`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: input })
+                });
+
+                const data = await response.json();
+                console.log('Search response:', data);
+                
+                document.getElementById('searchResult').innerHTML = `
+                    <h3>Search Response:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                console.error('Search error:', error);
+                document.getElementById('searchResult').innerHTML = `
+                    <h3>Error:</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+
+        async function testTickets() {
+            try {
+                console.log('Fetching tickets...');
+                const response = await fetch(`${API_BASE_URL}/tickets`);
+                const data = await response.json();
+                console.log('Tickets response:', data);
+                
+                document.getElementById('ticketsResult').innerHTML = `
+                    <h3>Tickets Response:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                console.error('Tickets error:', error);
+                document.getElementById('ticketsResult').innerHTML = `
+                    <h3>Error:</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 

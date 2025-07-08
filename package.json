@@ -1,0 +1,16 @@
+{
+  "name": "bugsense",
+  "version": "1.0.0",
+  "description": "BugSense - Making Sense of Every Bug",
+  "main": "start-server.js",
+  "scripts": {
+    "start": "node start-server.js",
+    "start-backend": "cd backend && node server.js",
+    "dev": "node start-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["bug", "jira", "ai", "debugging", "troubleshooting"],
+  "author": "BugSense Team",
+  "license": "ISC",
+  "dependencies": {}
+} 

@@ -1,0 +1,81 @@
+// fetchIssues.js
+require("dotenv").config();
+const axios = require("axios");
+
+let storedResults = [];
+
+// Helper function to extract text from Jira's structured content
+function extractTextFromContent(content) {
+    if (!Array.isArray(content)) return '';
+    
+    return content.map(item => {
+        if (item.type === 'text') {
+            return item.text || '';
+        } else if (item.content) {
+            return extractTextFromContent(item.content);
+        }
+        return '';
+    }).join(' ').trim();
+}
+
+async function fetchJiraIssues(query) {
+    const auth = Buffer.from(`${process.env.JIRA_EMAIL}:${process.env.JIRA_API_TOKEN}`).toString('base64');
+
+    const jql = `project=${process.env.JIRA_PROJECT_KEY} AND summary ~ "${query}" ORDER BY created DESC`;
+
+    try {
+        const response = await axios.get(`${process.env.JIRA_DOMAIN}/rest/api/3/search`, {
+            headers: {
+                'Authorization': `Basic ${auth}`,
+                'Accept': 'application/json'
+            },
+            params: {
+                jql: jql,
+                maxResults: 10
+            }
+        });
+
+        const issues = response.data.issues.map(issue => {
+            try {
+                // Handle description field which can be null or an object
+                let description = '';
+                if (issue.fields.description) {
+                    if (typeof issue.fields.description === 'string') {
+                        description = issue.fields.description;
+                    } else if (issue.fields.description.content) {
+                        // Handle Jira's structured content format
+                        description = extractTextFromContent(issue.fields.description.content);
+                    }
+                }
+                
+                return {
+                    key: issue.key || 'Unknown',
+                    summary: issue.fields.summary || 'No summary available',
+                    description: description,
+                    url: `${process.env.JIRA_DOMAIN}/browse/${issue.key}`
+                };
+            } catch (error) {
+                console.error('Error processing issue:', error);
+                return {
+                    key: 'Error',
+                    summary: 'Error processing this issue',
+                    description: 'Unable to load issue details',
+                    url: '#'
+                };
+            }
+        });
+
+        storedResults = issues;  // Save for later summarization
+        return issues;
+
+    } catch (error) {
+        console.error("Error fetching issues:", error.response?.data || error.message);
+        return [];
+    }
+}
+
+function getStoredResults() {
+    return storedResults;
+}
+
+module.exports = { fetchJiraIssues, getStoredResults };
