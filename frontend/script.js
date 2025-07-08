@@ -1,4 +1,6 @@
-const API_BASE_URL = 'http://localhost:3000';
+// const API_BASE_URL = 'http://localhost:3000';
+
+const API_BASE_URL = 'https://hackbug-1.onrender.com';
 
 function showSearchPage() {
     document.getElementById('home-page').style.display = 'none';
