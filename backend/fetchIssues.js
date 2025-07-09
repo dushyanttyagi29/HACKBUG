@@ -74,8 +74,15 @@ async function fetchJiraIssues(query) {
     }
 }
 
+// function getStoredResults() {
+//     return storedResults;
+// }
+
+
 function getStoredResults() {
+    console.log("🔍 Stored Results Accessed:", storedResults);
     return storedResults;
 }
+
 
 module.exports = { fetchJiraIssues, getStoredResults };

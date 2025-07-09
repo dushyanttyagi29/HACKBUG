@@ -19,6 +19,56 @@ function goHome() {
      document.querySelector('.logo-text').classList.remove('show');
 }
 
+// async function searchBugs() {
+//     const input = document.getElementById('bug-input').value;
+//     if (!input.trim()) {
+//         alert('Please enter a bug description');
+//         return;
+//     }
+
+//     try {
+//         // Show loading state
+//         document.getElementById('results-section').style.display = 'block';
+//         document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+        
+//         // Update result cards to show loading
+//         const resultCards = document.querySelectorAll('.result-card');
+//         resultCards[0].innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> Searching Tickets...</h3><p>Finding similar issues...</p>';
+//         resultCards[1].innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> Generating Summary...</h3><p>AI analysis in progress...</p>';
+
+//         // Search for tickets
+//         const response = await fetch(`${API_BASE_URL}/search`, {
+    
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ query: input })
+//         });
+
+//         const data = await response.json();
+        
+//         if (data.success) {
+//             // Update result cards with actual data
+//             const ticketCount = data.tickets.length;
+//             resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>${ticketCount} matches found • Click to expand</p>`;
+//             resultCards[1].innerHTML = '<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>';
+//         } else {
+//             throw new Error(data.error || 'Failed to search');
+//         }
+//     } catch (error) {
+//         console.error('Search error:', error);
+//         alert('Failed to search for bugs. Please try again.');
+        
+//         // Reset result cards
+//         const resultCards = document.querySelectorAll('.result-card');
+//         resultCards[0].innerHTML = '<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>0 matches found • Click to expand</p>';
+//         resultCards[1].innerHTML = '<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>';
+//     }
+// }
+
+
+
 async function searchBugs() {
     const input = document.getElementById('bug-input').value;
     if (!input.trim()) {
@@ -26,46 +76,54 @@ async function searchBugs() {
         return;
     }
 
-    try {
-        // Show loading state
-        document.getElementById('results-section').style.display = 'block';
-        document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
-        
-        // Update result cards to show loading
-        const resultCards = document.querySelectorAll('.result-card');
-        resultCards[0].innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> Searching Tickets...</h3><p>Finding similar issues...</p>';
-        resultCards[1].innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> Generating Summary...</h3><p>AI analysis in progress...</p>';
+    const resultCards = document.querySelectorAll('.result-card');
+    document.getElementById('results-section').style.display = 'block';
+    document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
 
-        // Search for tickets
-        const response = await fetch(`${API_BASE_URL}/search`, {
-    
+    resultCards[0].innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> Searching Tickets...</h3><p>Finding similar issues...</p>';
+    resultCards[1].innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> Generating Summary...</h3><p>AI analysis in progress...</p>';
+
+    try {
+        // 1. Search request
+        const searchRes = await fetch(`${API_BASE_URL}/search`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: input })
         });
 
-        const data = await response.json();
-        
-        if (data.success) {
-            // Update result cards with actual data
-            const ticketCount = data.tickets.length;
-            resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>${ticketCount} matches found • Click to expand</p>`;
-            resultCards[1].innerHTML = '<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>';
-        } else {
-            throw new Error(data.error || 'Failed to search');
+        const searchData = await searchRes.json();
+
+        if (!searchData.success) {
+            throw new Error('Search failed: ' + (searchData.error || 'unknown error'));
         }
+
+        console.log("✅ Search Results:", searchData.tickets);
+
+        // 2. Now GET tickets to confirm storage
+        const ticketRes = await fetch(`${API_BASE_URL}/tickets`);
+        const ticketData = await ticketRes.json();
+        console.log("🎟️ /tickets response:", ticketData);
+
+        const summaryRes = await fetch(`${API_BASE_URL}/summary`);
+        const summaryData = await summaryRes.json();
+        console.log("🧠 /summary response:", summaryData);
+
+        // Update result cards
+        const ticketCount = ticketData.tickets?.length || 0;
+        resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>${ticketCount} matches found • Click to expand</p>`;
+        resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>`;
+
     } catch (error) {
-        console.error('Search error:', error);
-        alert('Failed to search for bugs. Please try again.');
-        
-        // Reset result cards
-        const resultCards = document.querySelectorAll('.result-card');
-        resultCards[0].innerHTML = '<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>0 matches found • Click to expand</p>';
-        resultCards[1].innerHTML = '<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>';
+        console.error('❌ Search Error:', error);
+        alert('Search failed. Please try again.');
+
+        resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>0 matches found • Click to expand</p>`;
+        resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Try again • Click to expand</p>`;
     }
 }
+
+
+
 
 async function showSimilarTickets() {
     document.getElementById('tickets-modal').style.display = 'block';
