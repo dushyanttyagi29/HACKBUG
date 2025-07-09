@@ -115,7 +115,8 @@ app.use(cors({
 
 const allowedOrigins = [
     "http://127.0.0.1:3000", // local dev
-    "http://localhost:3000", // optional
+    "http://localhost:3000", 
+    "https://hackbug-front.onrender.com"// optional
     //"", // deployed frontend on Vercel or Netlify
 ];
 
