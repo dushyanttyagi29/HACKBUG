@@ -18,7 +18,7 @@ function goHome() {
     document.getElementById('results-section').style.display = 'none';
     document.querySelector('.back-btn').style.display = 'none';
     // Remove class so it goes back to scroll-controlled visibility
-     document.querySelector('.logo-text').classList.remove('show');
+    document.querySelector('.logo-text').classList.remove('show');
 }
 
 // async function searchBugs() {
