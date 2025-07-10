@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <title>BugSense</title>
@@ -30,14 +30,14 @@
                 <div class="hero-content">
                     <h1 id="main-logo">BugSense</h1>
                     <p>Making Sense of Every Bug</p>
-                    <div class="hero-question">Let me know which bug is bothering you?</div>
-                    <button class="cta-btn" onclick="showSearchPage()">Get Started</button>
+                    <div class="hero-question">Let us know which bug is bothering you?</div>
+                    <button class="cta-btn" onclick="showSearchPage()">Let's Get Started</button>
                 </div>
             </div>
 
             <div class="marketing">
                 <h2>Stop Wasting Time on Bug Hunting</h2>
-                <p>Get instant solutions to your bugs by matching them with thousands of resolved Jira tickets and StackOverflow answers. Save hours of debugging with AI-powered pattern recognition.</p>
+                <p>Get instant solutions to your bugs by matching them with a vast collection of resolved Jira tickets and StackOverflow answers. Save hours of debugging with AI-generated summaries and keyword-based bug matching.</p>
             </div>
 
             <div class="features">
@@ -46,7 +46,7 @@
                     <h3>Save Time</h3>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-search"></i></div>
+                    <div class="feature-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
                     <h3>Smart Matching</h3>
                 </div>
                 <div class="feature-card">
@@ -61,25 +61,25 @@
                 <!-- <h2>How BugSense Works</h2> -->
                 <div class="steps">
                     <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-icon"><i class="fas fa-search"></i></div>
+                        <!-- <div class="step-number">1</div> -->
+                        <div class="step-icon"><i class="fa-solid fa-paste"></i></div>
                         <h3>Paste Error</h3>
                         <p>Copy your error message or stack trace</p>
                     </div>
                     <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-icon"><i class="fas fa-bug"></i></div>
+                        <!-- <div class="step-number">2</div> -->
+                        <div class="step-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
                         <h3>AI Analysis</h3>
                         <p>Our AI analyzes patterns and extracts key info</p>
                     </div>
                     <div class="step">
-                        <div class="step-number">3</div>
+                        <!-- <div class="step-number">3</div> -->
                         <div class="step-icon"><i class="fas fa-file-alt"></i></div>
                         <h3>Find Matches</h3>
                         <p>Search Jira tickets posts</p>
                     </div>
                     <div class="step">
-                        <div class="step-number">4</div>
+                        <!-- <div class="step-number">4</div> -->
                         <div class="step-icon"><i class="fas fa-lightbulb"></i></div>
                         <h3>Get Solutions</h3>
                         <p>Receive ranked solutions with proven steps</p>
@@ -107,11 +107,11 @@
                 <div class="results">
                     <div class="result-card" onclick="showSimilarTickets()">
                         <h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3>
-                        <p>4 matches found • Click to expand</p>
+                        <p>4 matches found • Click to know more</p>
                     </div>
                     <div class="result-card" onclick="showSummary()">
                         <h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3>
-                        <p>Consolidated solution • Click to expand</p>
+                        <p>Consolidated solution • Click to know more</p>
                     </div>
                 </div>
             </div>
@@ -122,9 +122,10 @@
     <div id="tickets-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">📋 Similar Tickets Found</div>
+                <div class="modal-title"><i class="fas fa-file-alt"></i> Similar Tickets Found</div>
                 <button class="close-btn" onclick="closeModal('tickets-modal')">&times;</button>
             </div>
+            <div class="modal-body">
             <p style="margin-bottom: 20px; color: #666;" id="tickets-count">Loading tickets...</p>
             
             <div id="tickets-container">
@@ -133,6 +134,7 @@
                     <p>Loading similar tickets...</p>
                 </div>
             </div>
+            </div>
         </div>
     </div>
 
@@ -140,9 +142,10 @@
     <div id="summary-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">💡 Bug Resolution Summary</div>
+                <div class="modal-title"><i class="fas fa-lightbulb"></i> Bug Resolution Summary</div>
                 <button class="close-btn" onclick="closeModal('summary-modal')">&times;</button>
             </div>
+            <div class="modal-body">
             <p style="margin-bottom: 30px; color: #666;">Comprehensive solution analysis</p>
             
             <div id="summary-container">
@@ -150,6 +153,7 @@
                     <i class="fas fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 10px;"></i>
                     <p>Generating AI summary...</p>
                 </div>
+            </div>
             </div>
         </div>
     </div>

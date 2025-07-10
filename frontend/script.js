@@ -111,16 +111,27 @@ async function searchBugs() {
         console.log("🧠 /summary response:", summaryData);
 
         // Update result cards
+        // const ticketCount = ticketData.tickets?.length || 0;
+        // resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>${ticketCount} matches found • Click to expand</p>`;
+        // resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>`;
+
+
+        // Update result cards
         const ticketCount = ticketData.tickets?.length || 0;
-        resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>${ticketCount} matches found • Click to expand</p>`;
-        resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>`;
+        const matchLabel = ticketCount === 1  ? 'match' : 'matches';
+
+        resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span         class="result-arrow">→</span></h3><p>${ticketCount} ${matchLabel} found • Click to know more</p>`;
+        resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to know more</p>`;
+
+
+
 
     } catch (error) {
         console.error('❌ Search Error:', error);
         alert('Search failed. Please try again.');
 
-        resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>0 matches found • Click to expand</p>`;
-        resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Try again • Click to expand</p>`;
+        resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>0 matches found • Click to know more</p>`;
+        resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Try again • Click to know more</p>`;
     }
 }
 
@@ -172,7 +183,7 @@ function displayTickets(tickets) {
                     <span class="ticket-tag">${ticket.key || 'Unknown'}</span>
                     <span class="ticket-tag">Jira</span>
                 </div>
-                <div class="match-score">${Math.floor(Math.random() * 20 + 80)}% match</div>
+                // <div class="match-score">${Math.floor(Math.random() * 20 + 80)}% match</div>
             </div>
             <div class="ticket-title">${ticket.summary || 'No title available'}</div>
             <div class="ticket-description">

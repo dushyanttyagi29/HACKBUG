@@ -354,6 +354,14 @@
             justify-content: center;
             font-size: 2rem;
             color: white;
+            transition: all 0.3s ease;
+        }
+
+        .step-icon:hover {  
+            transform: scale(1.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 16px rgba(255, 107, 53, 0.3);
+            cursor: pointer;
         }
 
         .step:nth-child(1) .step-icon {
@@ -505,7 +513,7 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .modal-content {
+        /* .modal-content {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -517,9 +525,9 @@
             max-height: 90%;
             overflow-y: auto;
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
+        } */
 
-        .modal-header {
+        /* .modal-header {
             background: #ff6b35;
             color: white;
             padding: 20px 30px;
@@ -528,15 +536,59 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        } */
+
+        /* .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        } */
+
+
+
+        .modal-content {     /* CHANGE */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        .modal-title {
+        .modal-header {   /* CHANGE */
+            background: #ff6b35;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .modal-title {    /* CHANGE */
             font-size: 1.5rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
+        .modal-body{   /* CHANGE */
+            overflow-y: auto;
+            padding: 20px 30px;
+            flex: 1;
+        }
+
 
         .close-btn {
             background: none;
