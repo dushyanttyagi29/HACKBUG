@@ -1,8 +1,8 @@
- //const API_BASE_URL = 'http://localhost:3005';
+ const API_BASE_URL = 'http://localhost:3005';
 
 
 
-const API_BASE_URL = 'https://hackbug-back.onrender.com';
+//const API_BASE_URL = 'https://hackbug-back.onrender.com';
 
 function showSearchPage() {
     document.getElementById('home-page').style.display = 'none';
@@ -20,55 +20,6 @@ function goHome() {
     // Remove class so it goes back to scroll-controlled visibility
     document.querySelector('.logo-text').classList.remove('show');
 }
-
-// async function searchBugs() {
-//     const input = document.getElementById('bug-input').value;
-//     if (!input.trim()) {
-//         alert('Please enter a bug description');
-//         return;
-//     }
-
-//     try {
-//         // Show loading state
-//         document.getElementById('results-section').style.display = 'block';
-//         document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
-        
-//         // Update result cards to show loading
-//         const resultCards = document.querySelectorAll('.result-card');
-//         resultCards[0].innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> Searching Tickets...</h3><p>Finding similar issues...</p>';
-//         resultCards[1].innerHTML = '<h3><i class="fas fa-spinner fa-spin"></i> Generating Summary...</h3><p>AI analysis in progress...</p>';
-
-//         // Search for tickets
-//         const response = await fetch(`${API_BASE_URL}/search`, {
-    
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({ query: input })
-//         });
-
-//         const data = await response.json();
-        
-//         if (data.success) {
-//             // Update result cards with actual data
-//             const ticketCount = data.tickets.length;
-//             resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>${ticketCount} matches found • Click to expand</p>`;
-//             resultCards[1].innerHTML = '<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>';
-//         } else {
-//             throw new Error(data.error || 'Failed to search');
-//         }
-//     } catch (error) {
-//         console.error('Search error:', error);
-//         alert('Failed to search for bugs. Please try again.');
-        
-//         // Reset result cards
-//         const resultCards = document.querySelectorAll('.result-card');
-//         resultCards[0].innerHTML = '<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>0 matches found • Click to expand</p>';
-//         resultCards[1].innerHTML = '<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>';
-//     }
-// }
-
 
 
 async function searchBugs() {
@@ -109,11 +60,6 @@ async function searchBugs() {
         const summaryRes = await fetch(`${API_BASE_URL}/summary`);
         const summaryData = await summaryRes.json();
         console.log("🧠 /summary response:", summaryData);
-
-        // Update result cards
-        // const ticketCount = ticketData.tickets?.length || 0;
-        // resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3><p>${ticketCount} matches found • Click to expand</p>`;
-        // resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to expand</p>`;
 
 
         // Update result cards
@@ -176,28 +122,53 @@ function displayTickets(tickets) {
     
     countElement.textContent = `${tickets.length} matching issues from Jira & StackOverflow`;
     
-    const ticketsHTML = tickets.map(ticket => `
-        <div class="ticket-item">
+    const ticketsHTML = tickets.map((ticket, index) => {
+        // If StackOverflow, show answer count and score as extra info
+        let extraInfo = '';
+        let description = '';
+        
+        if (ticket.source === 'StackOverflow') {
+            extraInfo = `<div class="so-extra">📝 Answers: ${ticket.answerCount || 0} • ⭐ Score: ${ticket.score || 0}</div>`;
+            
+            // Add meaningful Stack Overflow content
+            if (ticket.description && typeof ticket.description === 'string') {
+                description = ticket.description.length > 200 ? 
+                    ticket.description.substring(0, 200) + '...' : 
+                    ticket.description;
+            } else {
+                description = 'This Stack Overflow question addresses a similar technical issue. The community has provided multiple solutions and approaches to resolve this problem.';
+            }
+        } else {
+            // Jira ticket content
+            description = ticket.description && typeof ticket.description === 'string' ? 
+                (ticket.description.length > 200 ? ticket.description.substring(0, 200) + '...' : ticket.description) 
+                : 'This Jira ticket documents a similar issue that has been resolved. It contains detailed information about the problem and its solution.';
+        }
+        
+        // Add special styling for the first item to make it more attractive
+        const isFirstItem = index === 0;
+        const itemClass = isFirstItem ? 'ticket-item featured-ticket' : 'ticket-item';
+        
+        return `
+        <div class="${itemClass}">
             <div class="ticket-header">
                 <div class="ticket-meta">
                     <span class="ticket-tag">${ticket.key || 'Unknown'}</span>
-                    <span class="ticket-tag">Jira</span>
+                    <span class="ticket-tag ${ticket.source === 'StackOverflow' ? 'so-tag' : 'jira-tag'}">${ticket.source || 'Jira'}</span>
                 </div>
-                // <div class="match-score">${Math.floor(Math.random() * 20 + 80)}% match</div>
             </div>
             <div class="ticket-title">${ticket.summary || 'No title available'}</div>
             <div class="ticket-description">
-                ${ticket.description && typeof ticket.description === 'string' ? 
-                    (ticket.description.length > 200 ? ticket.description.substring(0, 200) + '...' : ticket.description) 
-                    : 'No description available'}
+                ${description}
+                ${extraInfo}
             </div>
             <div class="ticket-footer">
-                <span>📅 ${new Date().toLocaleDateString()}</span>
                 <span class="status-resolved">Resolved</span>
             </div>
-            ${ticket.url ? `<div class="ticket-link"><a href="${ticket.url}" target="_blank">View in Jira →</a></div>` : ''}
+            ${ticket.url ? `<div class="ticket-link"><a href="${ticket.url}" target="_blank">${ticket.source === 'StackOverflow' ? 'View on StackOverflow →' : 'View in Jira →'}</a></div>` : ''}
         </div>
-    `).join('');
+        `;
+    }).join('');
     
     container.innerHTML = ticketsHTML;
 }
@@ -237,14 +208,51 @@ function displaySummary(summary) {
     const container = document.getElementById('summary-container');
     
     // Parse the summary and create a structured display
+    let formattedSummary = summary;
+    
+    // Convert numbered lists to bullet points with better formatting
+    formattedSummary = formattedSummary.replace(/^\d+\.\s+/gm, '• ');
+    
+    // Split into sections and format them
+    const sections = formattedSummary.split(/(?=Root Cause Analysis:|Issue Summaries:|Complete Resolution Steps:)/);
+    
     const summaryHTML = `
         <div class="summary-content">
-            <div class="summary-section">
-                <h3>💡 AI-Generated Summary</h3>
-                <div class="summary-text">
-                    ${summary.replace(/\n/g, '<br>')}
-                </div>
+            <div class="summary-header">
+                <h3><i class="fas fa-lightbulb"></i> AI-Generated Summary</h3>
+                <p>Consolidated solution from multiple sources</p>
             </div>
+            
+            ${sections.map(section => {
+                if (section.trim()) {
+                    const lines = section.trim().split('\n');
+                    const title = lines[0];
+                    const content = lines.slice(1).join('\n');
+                    
+                    return `
+                        <div class="summary-section">
+                            <div class="summary-section-header">
+                                <h4>${title}</h4>
+                            </div>
+                            <div class="summary-section-content">
+                                ${content.split('\n').map(line => {
+                                    // If the line is a bullet but just a bolded error title, render as a header
+                                    if (/^•\s*\*\*/.test(line.trim())) {
+                                        return `<div class="summary-error-title">${line.replace(/^•\s*/, '')}</div>`;
+                                    } else if (line.trim().startsWith('•')) {
+                                        const bulletText = line.trim().replace(/^•\s*/, '');
+                                        return `<div class="summary-bullet"><span class="summary-bullet-icon">💡</span><span class="summary-bullet-text">${bulletText}</span></div>`;
+                                    } else if (line.trim()) {
+                                        return `<p>${line.trim()}</p>`;
+                                    }
+                                    return '';
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+                return '';
+            }).join('')}
         </div>
     `;
     
