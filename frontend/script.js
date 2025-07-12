@@ -162,9 +162,6 @@ function displayTickets(tickets) {
                 ${description}
                 ${extraInfo}
             </div>
-            <div class="ticket-footer">
-                <span class="status-resolved">Resolved</span>
-            </div>
             ${ticket.url ? `<div class="ticket-link"><a href="${ticket.url}" target="_blank">${ticket.source === 'StackOverflow' ? 'View on StackOverflow →' : 'View in Jira →'}</a></div>` : ''}
         </div>
         `;
