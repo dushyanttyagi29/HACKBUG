@@ -115,7 +115,7 @@
             background: linear-gradient(135deg, #fff2e5, #f0e3d400);
             padding: 30px 40px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin: 20px 0;
             text-align: center;
         }
@@ -198,14 +198,14 @@
         /* Marketing Section */
         .marketing {
             text-align: center;
-            margin: 60px 0;
+            margin: 50px 0 0;
         }
 
         .marketing h2 {
             font-size: 2.5rem;
             font-weight: 700;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .marketing p {
@@ -221,17 +221,57 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            margin: 50px 0;
+            /* margin: 50px 0; */
         }
 
-        .feature-card {
-            /* background: white; */
+        /* .feature-card {
             background: linear-gradient(360deg, #f6e2d1, #ffffff);
             padding: 40px 30px;
             border-radius: 16px;
             text-align: center;
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             transition: transform 0.3s ease;
+        } */
+        
+        .feature-card {
+            perspective: 1000px;
+            cursor: pointer;
+            height: 250px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .feature-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            background: linear-gradient(360deg, #f6e2d1, #ffffff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            font-size: 1rem;
+            color: #333;
         }
 
         .feature-card:hover {
@@ -274,9 +314,9 @@
             /* background: white; */
             background: linear-gradient(320deg, #f6e2d1, #ffffff);
             padding: 30px 0;
-            margin: 50px 0;
+            /* margin: 50px 0; */
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .how-it-works h2 {
@@ -396,10 +436,10 @@
         .search-section {
             /* background: white; */
             background: linear-gradient(320deg, #f6e2d1, #ffffff);
-            padding: 40px 0;
-            margin: 40px 0;
+            padding: 20px 0;
+            margin: 20px 0;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
         }
 
@@ -451,7 +491,7 @@
 
         .search-help {
             color: #666;
-            margin: 20px 0;
+            margin: 30px 0 20px;
             font-size: 0.9rem;
         }
 
@@ -470,7 +510,7 @@
             border-radius: 16px;
             cursor: pointer;
             transition: transform 0.3s ease;
-            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.3);
+            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.1);
         }
 
         .result-card:hover {
@@ -478,7 +518,7 @@
         }
 
         .result-card:nth-child(2) {
-            background: linear-gradient(135deg, #ff9800, #ffb74d);
+            background: linear-gradient(135deg, #959595, #959595e0);
         }
 
         .result-card h3 {
@@ -621,7 +661,6 @@
         }
 
         .featured-ticket::before {
-            content: "⭐ Featured Match";
             position: absolute;
             top: -10px;
             right: 20px;
@@ -912,7 +951,7 @@
           font-size: 2.5rem;
           font-weight: 700;
           color: #333;
-          margin: 60px 0 20px;
+          margin: 50px 0 20px;
         }
 
         .page-wrapper {
@@ -970,5 +1009,129 @@
     }
     .summary-section {
         border-radius: 10px;
+    }
+}
+
+/* New Three-Card Summary Layout */
+.summary-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.summary-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.summary-card-header {
+    background: linear-gradient(135deg, #ff6b35, #ff8c42);
+    padding: 20px 24px;
+    color: white;
+}
+
+.summary-card-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.summary-card-header i {
+    font-size: 1.1rem;
+}
+
+.summary-card-content {
+    padding: 24px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.summary-card-content p {
+    margin-bottom: 16px;
+    color: #555;
+    font-size: 1rem;
+}
+
+.project-numbers {
+    margin-top: 20px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #ff6b35;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.project-numbers strong {
+    color: #ff6b35;
+    font-weight: 600;
+}
+
+.resolution-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 3px solid #ff6b35;
+    transition: all 0.3s ease;
+}
+
+.resolution-step:hover {
+    background: #fff5f0;
+    transform: translateX(4px);
+}
+
+.step-bullet {
+    color: #ff6b35;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.step-text {
+    flex: 1;
+    color: #333;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Responsive design for summary cards */
+@media (max-width: 768px) {
+    .summary-cards {
+        gap: 16px;
+    }
+    
+    .summary-card-header {
+        padding: 16px 20px;
+    }
+    
+    .summary-card-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .summary-card-content {
+        padding: 20px;
+    }
+    
+    .resolution-step {
+        padding: 14px;
+        margin-bottom: 12px;
     }
 }

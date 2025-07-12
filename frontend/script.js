@@ -1,8 +1,8 @@
- //const API_BASE_URL = 'http://localhost:3005';
+ const API_BASE_URL = 'http://localhost:3005';
 
 
 
-const API_BASE_URL = 'https://hackbug-back.onrender.com';
+//const API_BASE_URL = 'https://hackbug-back.onrender.com';
 
 function showSearchPage() {
     document.getElementById('home-page').style.display = 'none';
@@ -66,8 +66,8 @@ async function searchBugs() {
         const ticketCount = ticketData.tickets?.length || 0;
         const matchLabel = ticketCount === 1  ? 'match' : 'matches';
 
-        resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets <span         class="result-arrow">→</span></h3><p>${ticketCount} ${matchLabel} found • Click to know more</p>`;
-        resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3><p>Consolidated solution • Click to know more</p>`;
+        resultCards[0].innerHTML = `<h3><i class="fas fa-file-alt"></i> Similar Tickets </h3><p>Top ${ticketCount} ${matchLabel} found • Click to know more</p>`;
+        resultCards[1].innerHTML = `<h3><i class="fas fa-lightbulb"></i> Summary</h3><p>Consolidated solution • Click to know more</p>`;
 
 
 
@@ -120,7 +120,7 @@ function displayTickets(tickets) {
         return;
     }
     
-    countElement.textContent = `${tickets.length} matching issues from Jira & StackOverflow`;
+    countElement.textContent = `Top ${tickets.length} matching issues from Jira & StackOverflow`;
     
     const ticketsHTML = tickets.map((ticket, index) => {
         // If StackOverflow, show answer count and score as extra info
@@ -207,52 +207,60 @@ async function showSummary() {
 function displaySummary(summary) {
     const container = document.getElementById('summary-container');
     
-    // Parse the summary and create a structured display
-    let formattedSummary = summary;
+    // Parse the summary to extract the three sections
+    const summaryMatch = summary.match(/Summary of Tickets:\s*([\s\S]*?)(?=Root Cause Analysis:)/);
+    const rootCauseMatch = summary.match(/Root Cause Analysis:\s*([\s\S]*?)(?=Resolution Steps:)/);
+    const resolutionMatch = summary.match(/Resolution Steps:\s*([\s\S]*?)(?=\*\*Project\/Question Numbers:\*\*|$)/);
+    const projectNumbersMatch = summary.match(/\*\*Project\/Question Numbers:\*\*\s*(.*?)$/);
     
-    // Convert numbered lists to bullet points with better formatting
-    formattedSummary = formattedSummary.replace(/^\d+\.\s+/gm, '• ');
+    const summaryText = summaryMatch ? summaryMatch[1].trim() : 'Summary not available';
+    const rootCauseText = rootCauseMatch ? rootCauseMatch[1].trim() : 'Root cause analysis not available';
+    const resolutionText = resolutionMatch ? resolutionMatch[1].trim() : 'Resolution steps not available';
+    const projectNumbers = projectNumbersMatch ? projectNumbersMatch[1].trim() : '';
     
-    // Split into sections and format them
-    const sections = formattedSummary.split(/(?=Root Cause Analysis:|Issue Summaries:|Complete Resolution Steps:)/);
+    // Convert numbered lists to bullet points for resolution steps
+    const formattedResolution = resolutionText.replace(/^\d+\.\s+/gm, '• ');
     
     const summaryHTML = `
-        <div class="summary-content">
-            <div class="summary-header">
-                <h3><i class="fas fa-lightbulb"></i> AI-Generated Summary</h3>
-                <p>Consolidated solution from multiple sources</p>
+        <div class="summary-cards">
+            <!-- Card 1: Summary of Tickets -->
+            <div class="summary-card">
+                <div class="summary-card-header">
+                    <h3><i class="fas fa-file-alt"></i> Summary of Tickets</h3>
+                </div>
+                <div class="summary-card-content">
+                    <p>${summaryText}</p>
+                    ${projectNumbers ? `<div class="project-numbers"><strong>Project/Question Numbers:</strong> ${projectNumbers}</div>` : ''}
+                </div>
             </div>
             
-            ${sections.map(section => {
-                if (section.trim()) {
-                    const lines = section.trim().split('\n');
-                    const title = lines[0];
-                    const content = lines.slice(1).join('\n');
-                    
-                    return `
-                        <div class="summary-section">
-                            <div class="summary-section-header">
-                                <h4>${title}</h4>
-                            </div>
-                            <div class="summary-section-content">
-                                ${content.split('\n').map(line => {
-                                    // If the line is a bullet but just a bolded error title, render as a header
-                                    if (/^•\s*\*\*/.test(line.trim())) {
-                                        return `<div class="summary-error-title">${line.replace(/^•\s*/, '')}</div>`;
-                                    } else if (line.trim().startsWith('•')) {
-                                        const bulletText = line.trim().replace(/^•\s*/, '');
-                                        return `<div class="summary-bullet"><span class="summary-bullet-icon">💡</span><span class="summary-bullet-text">${bulletText}</span></div>`;
-                                    } else if (line.trim()) {
-                                        return `<p>${line.trim()}</p>`;
-                                    }
-                                    return '';
-                                }).join('')}
-                            </div>
-                        </div>
-                    `;
-                }
-                return '';
-            }).join('')}
+            <!-- Card 2: Root Cause Analysis -->
+            <div class="summary-card">
+                <div class="summary-card-header">
+                    <h3><i class="fas fa-search"></i> Root Cause Analysis</h3>
+                </div>
+                <div class="summary-card-content">
+                    <p>${rootCauseText}</p>
+                </div>
+            </div>
+            
+            <!-- Card 3: Resolution Steps -->
+            <div class="summary-card">
+                <div class="summary-card-header">
+                    <h3><i class="fas fa-tools"></i> Resolution Steps</h3>
+                </div>
+                <div class="summary-card-content">
+                    ${formattedResolution.split('\n').map(line => {
+                        if (line.trim().startsWith('•')) {
+                            const bulletText = line.trim().replace(/^•\s*/, '');
+                            return `<div class="resolution-step"><span class="step-bullet">•</span><span class="step-text">${bulletText}</span></div>`;
+                        } else if (line.trim()) {
+                            return `<p>${line.trim()}</p>`;
+                        }
+                        return '';
+                    }).join('')}
+                </div>
+            </div>
         </div>
     `;
     

@@ -36,22 +36,47 @@
             </div>
 
             <div class="marketing">
-                <h2>Stop Wasting Time on Bug Hunting</h2>
-                <p>Get instant solutions to your bugs by matching them with a vast collection of resolved Jira tickets and StackOverflow answers. Save hours of debugging with AI-generated summaries and keyword-based bug matching.</p>
+                <h2>Let AI Handle the Bug Hunt</h2>
             </div>
 
             <div class="features">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-clock"></i></div>
-                    <h3>Save Time</h3>
+                <!-- Save time Card -->
+                <div class="feature-card" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                    <div class="card-front">
+                        <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                        <h3>Save Time</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>Developers spend up to <strong>50% of their time debugging</strong>. BugSense reduces this with instant retrieval of matched tickets and AI-generated summaries.</p>
+                    </div>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-                    <h3>Smart Matching</h3>
+
+                <!-- Smart Matching Card -->
+                <div class="feature-card" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                    <div class="card-front">
+                        <div class="feature-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                        <h3>Smart Matching</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>BugSense performs <strong>keyword-based matching</strong> across Jira and StackOverflow. Then, AI summarizes the results into concise, developer-friendly solutions.</p>
+                    </div>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
-                    <h3>Proven Solutions</h3>
+
+                <!-- Proven Solutions Card -->
+                <div class="feature-card" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                    <div class="card-front">
+                        <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+                        <h3>Proven Solutions</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>Over <strong>70% of bugs</strong> are recurring. BugSense shows verified fixes from real-world tickets so you can reuse what's already worked — fast.</p>
+                    </div>
+                    </div>
                 </div>
             </div>
 
@@ -88,7 +113,7 @@
             </div>
 
             <div style="text-align: center; margin: 60px 0;">
-                <button class="cta-btn" onclick="showSearchPage()">Try BugSense Now</button>
+                <button class="cta-btn" onclick="showSearchPage()">Try It Now</button>
             </div>
         </div>
 
@@ -106,11 +131,11 @@
             <div id="results-section" style="display: none;">
                 <div class="results">
                     <div class="result-card" onclick="showSimilarTickets()">
-                        <h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3>
+                        <!-- <h3><i class="fas fa-file-alt"></i> Similar Tickets <span class="result-arrow">→</span></h3> -->
                         <p>4 matches found • Click to know more</p>
                     </div>
                     <div class="result-card" onclick="showSummary()">
-                        <h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3>
+                        <!-- <h3><i class="fas fa-lightbulb"></i> Summary <span class="result-arrow">→</span></h3> -->
                         <p>Consolidated solution • Click to know more</p>
                     </div>
                 </div>
@@ -142,11 +167,11 @@
     <div id="summary-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title"><i class="fas fa-lightbulb"></i> Bug Resolution Summary</div>
+                <div class="modal-title"><i class="fas fa-lightbulb"></i> AI Analysis Summary</div>
                 <button class="close-btn" onclick="closeModal('summary-modal')">&times;</button>
             </div>
             <div class="modal-body">
-            <p style="margin-bottom: 30px; color: #666;">Comprehensive solution analysis</p>
+            <p style="margin-bottom: 30px; color: #666;">Three-part comprehensive analysis</p>
             
             <div id="summary-container">
                 <div style="text-align: center; padding: 40px; color: #666;">
